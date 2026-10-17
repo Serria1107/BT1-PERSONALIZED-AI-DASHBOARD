@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6fb">
+    <meta name="description" content="Dashboard cá nhân để giao việc, theo dõi tiến độ và quản lý thời hạn.">
+    <title>Personalized AI Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="Đóng menu"></button>
+      <aside class="sidebar" id="sidebar" aria-label="Thanh điều hướng">
+        <a class="brand" href="#" aria-label="Focusly - Dashboard" data-filter="all" data-nav-view="dashboard">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M7 17.5 13 23l12-14" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2"/></svg>
+          </span>
+          <span class="brand-copy"><strong>focusly</strong><small>TASK MANAGEMENT</small></span>
+        </a>
+        <p class="nav-heading">KHÔNG GIAN LÀM VIỆC</p>
+        <nav class="primary-nav" aria-label="Điều hướng công việc">
+          <button class="nav-link is-active" type="button" data-filter="all" data-nav-view="dashboard" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg><span>Dashboard</span></button>
+          <button class="nav-link" type="button" data-filter="all" data-nav-view="all"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg><span>Tất cả công việc</span><span class="nav-count" id="nav-total">0</span></button>
+          <button class="nav-link" type="button" data-filter="completed" data-nav-view="completed"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12 2.3 2.3 4.8-5"/></svg><span>Đã hoàn thành</span></button>
+          <button class="nav-link" type="button" data-filter="incomplete" data-nav-view="incomplete"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3.2 2"/></svg><span>Chưa hoàn thành</span></button>
+          <button class="nav-link" type="button" data-filter="pending" data-nav-view="pending"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5"/></svg><span>Chờ nhận</span></button>
+          <button class="nav-link" type="button" data-filter="accepted" data-nav-view="accepted"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>Đã nhận</span></button>
+          <button class="nav-link" type="button" data-filter="in_progress" data-nav-view="in_progress"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg><span>Đang thực hiện</span></button>
+          <button class="nav-link" type="button" data-filter="overdue" data-nav-view="overdue"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 21 20H3l9-16.5Z"/><path d="M12 9v4m0 3h.01"/></svg><span>Quá hạn</span></button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="sidebar-note"><span class="note-icon" aria-hidden="true">✦</span><p><strong>Mỗi ngày một bước</strong><br>Rõ người phụ trách, rõ thời hạn, rõ tiến độ.</p></div>
+          <div class="sidebar-credit"><span class="online-dot"></span> Dữ liệu lưu trên thiết bị này</div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="menu-button" id="menu-button" type="button" aria-label="Mở menu" aria-controls="sidebar" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+          <div class="breadcrumb"><span>Không gian của tôi</span><span class="breadcrumb-separator">/</span><strong>Dashboard</strong></div>
+          <div class="topbar-right">
+            <div class="date-time"><span id="current-date"></span><time id="current-time" aria-label="Thời gian hiện tại"></time></div>
+            <button class="profile-button" id="edit-name-button" type="button" aria-label="Chỉnh sửa tên hiển thị"><span class="avatar" id="avatar-initials">B</span><span class="profile-name" id="profile-name">Bạn</span><svg class="chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+          </div>
+        </header>
+
+        <div class="content-wrap">
+          <section class="welcome-section" aria-labelledby="welcome-title">
+            <div><p class="eyebrow"><span class="eyebrow-line"></span> KHÔNG GIAN CỦA BẠN</p><h1 id="welcome-title">Chào bạn, hôm nay bạn thế nào?</h1><p class="welcome-subtitle">Theo dõi người phụ trách, thời hạn và tiến độ công việc tại một nơi.</p></div>
+            <div class="welcome-decoration" aria-hidden="true"><span class="decoration-orbit orbit-one"></span><span class="decoration-orbit orbit-two"></span><span class="decoration-spark">✦</span><span class="decoration-dot"></span></div>
+          </section>
+
+          <section class="stats-grid stats-grid-expanded" aria-label="Thống kê công việc">
+            <article class="stat-card"><div class="stat-topline"><span class="stat-label">Tổng công việc</span><span class="stat-icon icon-blue" aria-hidden="true">▤</span></div><div class="stat-value" id="total-count">0</div><p class="stat-caption">Toàn bộ danh sách</p></article>
+            <article class="stat-card"><div class="stat-topline"><span class="stat-label">Chờ nhận</span><span class="stat-icon icon-amber" aria-hidden="true">○</span></div><div class="stat-value" id="pending-count">0</div><p class="stat-caption">Chưa có người nhận</p></article>
+            <article class="stat-card"><div class="stat-topline"><span class="stat-label">Đã nhận</span><span class="stat-icon icon-violet" aria-hidden="true">↗</span></div><div class="stat-value" id="accepted-count">0</div><p class="stat-caption">Chưa bắt đầu</p></article>
+            <article class="stat-card"><div class="stat-topline"><span class="stat-label">Đang thực hiện</span><span class="stat-icon icon-blue" aria-hidden="true">◷</span></div><div class="stat-value" id="in-progress-count">0</div><p class="stat-caption">Đang được xử lý</p></article>
+            <article class="stat-card"><div class="stat-topline"><span class="stat-label">Hoàn thành</span><span class="stat-icon icon-green" aria-hidden="true">✓</span></div><div class="stat-value" id="completed-count">0</div><p class="stat-caption">Đã hoàn tất</p></article>
+            <article class="stat-card"><div class="stat-topline"><span class="stat-label">Quá hạn</span><span class="stat-icon icon-red" aria-hidden="true">!</span></div><div class="stat-value" id="overdue-count">0</div><p class="stat-caption">Chưa hoàn thành</p></article>
+          </section>
+
+          <section class="work-panel" aria-labelledby="tasks-heading">
+            <div class="panel-heading">
+              <div><p class="eyebrow panel-eyebrow">TẬP TRUNG VÀO ĐIỀU QUAN TRỌNG</p><h2 id="tasks-heading">Quản lý công việc</h2></div>
+              <div class="panel-heading-actions"><span class="task-date" id="panel-date"></span><button class="add-button create-task-open" id="open-create-dialog" type="button"><span>＋ Tạo công việc</span></button></div>
+            </div>
+            <div class="task-search-row">
+              <label class="search-box" for="task-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><input id="task-search" type="search" placeholder="Tìm tên việc, người giao, người nhận, mô tả..." autocomplete="off"></label>
+              <label class="priority-filter-label" for="priority-filter">Ưu tiên</label>
+              <select id="priority-filter" class="priority-filter"><option value="all">Tất cả</option><option value="urgent">Khẩn cấp</option><option value="high">Cao</option><option value="medium">Trung bình</option><option value="low">Thấp</option></select>
+            </div>
+            <div class="list-toolbar">
+              <div class="filter-tabs" role="group" aria-label="Lọc công việc">
+                <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Tất cả <span id="filter-total">0</span></button>
+                <button class="filter-button" type="button" data-filter="completed" aria-pressed="false">Đã xong</button>
+                <button class="filter-button" type="button" data-filter="incomplete" aria-pressed="false">Chưa xong</button>
+                <button class="filter-button" type="button" data-filter="pending" aria-pressed="false">Chờ nhận</button>
+                <button class="filter-button" type="button" data-filter="accepted" aria-pressed="false">Đã nhận</button>
+                <button class="filter-button" type="button" data-filter="in_progress" aria-pressed="false">Đang làm</button>
+                <button class="filter-button" type="button" data-filter="overdue" aria-pressed="false">Quá hạn</button>
+              </div>
+            </div>
+            <p class="status-message" id="status-message" role="status" aria-live="polite" hidden></p>
+            <ul class="task-list task-card-list" id="task-list" aria-label="Các công việc của bạn"></ul>
+            <div class="empty-state" id="empty-state" hidden><span class="empty-illustration" aria-hidden="true"><span>✓</span></span><h3 id="empty-title">Một khởi đầu thật tốt!</h3><p id="empty-description">Tạo công việc đầu tiên để bắt đầu.</p></div>
+            <footer class="panel-footer"><span id="footer-summary">0 công việc · 0 đã xong · 0 đang chờ</span><span class="saved-indicator"><span class="saved-check">✓</span> Chỉ lưu trên thiết bị này</span></footer>
+          </section>
+          <p class="page-footer">Nhận và quản lý công việc trong phạm vi trình duyệt này <span aria-hidden="true">✦</span></p>
+        </div>
+      </main>
+    </div>
+
+    <dialog class="app-dialog" id="task-dialog" aria-labelledby="task-dialog-title">
+      <form class="dialog-form" id="task-form" novalidate>
+        <div class="dialog-heading"><div><p class="eyebrow">THÔNG TIN CÔNG VIỆC</p><h2 id="task-dialog-title">Tạo công việc mới</h2></div><button class="dialog-close" type="button" data-close-dialog="task-dialog" aria-label="Đóng">×</button></div>
+        <div class="form-grid">
+          <div class="form-field form-field-wide"><label for="task-title">Tên công việc <span>*</span></label><input id="task-title" name="title" type="text" maxlength="150" required placeholder="Ví dụ: Thiết kế giao diện trang chủ"></div>
+          <div class="form-field"><label for="task-assigned-by">Người giao công việc <span>*</span></label><input id="task-assigned-by" name="assignedBy" type="text" maxlength="80" required placeholder="Tên người giao"></div>
+          <div class="form-field"><label for="task-priority">Mức độ ưu tiên</label><select id="task-priority" name="priority"><option value="low">Thấp</option><option value="medium" selected>Trung bình</option><option value="high">Cao</option><option value="urgent">Khẩn cấp</option></select></div>
+          <div class="form-field form-field-wide"><label for="task-description">Mô tả chi tiết <span>*</span></label><textarea id="task-description" name="description" rows="4" maxlength="3000" required placeholder="Mô tả yêu cầu, phạm vi và kết quả mong muốn..."></textarea><small>Hỗ trợ xuống dòng · tối đa 3.000 ký tự</small></div>
+          <div class="form-field form-field-wide"><label for="task-deadline">Hạn hoàn thành <span>*</span></label><input id="task-deadline" name="deadline" type="datetime-local" required><small>Chọn ngày và giờ trong tương lai.</small></div>
+        </div>
+        <div class="dialog-actions"><button class="secondary-button" type="reset">Đặt lại</button><button class="secondary-button" type="button" data-close-dialog="task-dialog">Hủy</button><button class="add-button" type="submit" id="save-task-button">Tạo công việc</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="app-dialog" id="accept-dialog" aria-labelledby="accept-dialog-title">
+      <form class="dialog-form" id="accept-form" novalidate>
+        <div class="dialog-heading"><div><p class="eyebrow">XÁC NHẬN PHÂN CÔNG</p><h2 id="accept-dialog-title">Nhận công việc</h2></div><button class="dialog-close" type="button" data-close-dialog="accept-dialog" aria-label="Đóng">×</button></div>
+        <div class="accept-summary" id="accept-summary"></div>
+        <div class="form-field"><label for="assignee-name">Tên người nhận công việc <span>*</span></label><input id="assignee-name" name="assignedTo" type="text" maxlength="80" required placeholder="Nhập tên người nhận"></div>
+        <p class="simulation-note">Thao tác mô phỏng trong trình duyệt này, không xác thực danh tính người dùng.</p>
+        <div class="dialog-actions"><button class="secondary-button" type="button" data-close-dialog="accept-dialog">Hủy</button><button class="add-button" type="submit">Xác nhận nhận việc</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="app-dialog detail-dialog" id="detail-dialog" aria-labelledby="detail-title">
+      <div class="dialog-form">
+        <div class="dialog-heading"><div><p class="eyebrow">HỒ SƠ CÔNG VIỆC</p><h2 id="detail-title">Chi tiết công việc</h2></div><button class="dialog-close" type="button" data-close-dialog="detail-dialog" aria-label="Đóng">×</button></div>
+        <div class="detail-content" id="detail-content"></div>
+        <div class="dialog-actions dialog-actions-wrap" id="detail-actions"></div>
+      </div>
+    </dialog>
+
+    <dialog class="app-dialog confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-title">
+      <form method="dialog" class="dialog-form">
+        <div class="dialog-heading"><div><p class="eyebrow">XÁC NHẬN THAO TÁC</p><h2 id="confirm-title">Bạn có chắc chắn?</h2></div></div>
+        <p id="confirm-message" class="dialog-description"></p>
+        <div class="dialog-actions"><button class="secondary-button" value="cancel">Hủy</button><button class="add-button danger-button" id="confirm-action" value="confirm">Xác nhận</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="name-dialog" id="name-dialog" aria-labelledby="name-dialog-title">
+      <form id="name-form">
+        <button class="dialog-close" id="close-name-dialog" type="button" aria-label="Đóng">×</button><span class="dialog-avatar" aria-hidden="true">✦</span><p class="eyebrow">CÁ NHÂN HÓA DASHBOARD</p><h2 id="name-dialog-title">Bạn muốn được gọi là gì?</h2><p class="dialog-description">Tên chỉ lưu trên thiết bị này.</p><label for="name-input">Tên hiển thị</label><input id="name-input" name="name" type="text" maxlength="40" autocomplete="name" placeholder="Ví dụ: Minh Anh"><div class="dialog-actions"><button class="secondary-button" id="cancel-name-button" type="button">Để sau</button><button class="add-button" type="submit">Lưu tên</button></div>
+      </form>
+    </dialog>
+  </body>
+</html>
